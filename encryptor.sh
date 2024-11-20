@@ -1,8 +1,8 @@
 #!/bin/sh
 
 # Defines image directories.
-image_dir="/pathToDeathStarImages" # Specifies where Death Star images are. 
-enc_image_dir="/pathToEncrytpedImages" # Specifies where to save encrypted images. 
+image_dir="/pathToDeathStarImages/image_dir" # Specifies where Death Star images are. 
+enc_image_dir="/pathToEncrytpedImages/enc_image_dir" # Specifies where to save encrypted images. 
 
 # Creates output_dir if it doesn't exist. 
 if [ ! -d "$enc_image_dir" ]; then       
