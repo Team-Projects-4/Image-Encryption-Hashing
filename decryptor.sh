@@ -17,6 +17,6 @@ for image in "$enc_image_dir"/*; do
                 new_filename="${filename%.*}"
                 decrypted_image="dec_image_dir/dec_$new_filename.png"
         # Decrypts every image and saves the output to dec_image_dir
-                openssl enc -aes-256-cbc -pass pass:group4 -d -in "$image" -out "$decrypted_image" -P
+                openssl enc -d -aes-256-cbc -pass pass:group4 -in "$image" -out "$decrypted_image" -P
         fi
 done
