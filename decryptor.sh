@@ -13,6 +13,6 @@ fi
 for image in "$enc_image_dir"/*; do
         if [ -f "$image" ]; then
         # Decrypts every image and saves the output to dec_image_dir
-                openssl enc -aes-256-cbc -pass pass:group4 -d -in "$image" -out "$dec_image_dir/$(basename "$image").png" -P
+                openssl enc -aes-256-cbc -pass pass:group4 -d -in "$image" -out "$dec_image_dir/dec_$(basename "$image").png" -P
         fi
 done 
