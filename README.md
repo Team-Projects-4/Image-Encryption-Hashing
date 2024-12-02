@@ -11,8 +11,8 @@ Openssl code for encrypting and hashing images
 
 [encryptor.sh](https://github.com/Team-Projects-4/Image-Encryption/blob/main/encryptor.sh) is used for inital encryption before transmission.
 
-[hashor.sh](https://github.com/Team-Projects-4/Image-Encryption-Hashing/blob/main/hashor.sh)
+[hashor.sh](https://github.com/Team-Projects-4/Image-Encryption-Hashing/blob/main/hashor.sh) is used for inital hashing before transmission.
 
-[hash_verifier]()
+[hash_verifier](https://github.com/Team-Projects-4/Image-Encryption-Hashing/blob/main/hash_verifier.sh) is used for hash verification/ indication of a successful transmission.
 
 [decryptor.sh](https://github.com/Team-Projects-4/Image-Encryption/blob/main/decryptor.sh) is used for decryption after successful transmission.
