@@ -1,18 +1,19 @@
 #/!bin/sh
 
 # Defines image directories.
-enc_image_dir="/path/to/enc_image_dir" # Directory for encrypted DeathStar images.
-hashed_image_dir="path/to/hashed_image_dir" # Directory for saved hashes.
+enc_image_dir="enc_image_dir/" # Directory for encrypted DeathStar images.
+hashed_image_dir="hashed_image_dir/" # Directory for saved hashes.
 
 # Creates hashed_image_dir if it doesn't exist.
-if [ ! -d "$hashed_image_dir" ]; then       
+if [ ! -d "$hashed_image_dir" ]; then
         mkdir -p "$hashed_image_dir"
-fi 
+fi
 
-# Hashes every image in image_dir and saves it to hashed_image_dir
-for image in "$enc_image_dir/*"; do
+# Hashes every image in enc_image_dir and saves it to hashed_image_dir
+for image in "$enc_image_dir"/*; do
         if [ -f "$image" ]; then
-               filename=(basename "$image")
-               md5sum "$image" > "$hashed_image_dir/$filename.txt"
+               filename=$(basename "$image")
+
+               md5sum "$image" > "hashed_image_dir/$filename.txt"
         fi
-done 
+done
