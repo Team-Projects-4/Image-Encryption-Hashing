@@ -1,4 +1,4 @@
-# Image-Encryption-Hashing
+## Image-Encryption-Hashing
 Shell code for encrypting and hashing images
 
 1. Encrypt the images.
