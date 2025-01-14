@@ -16,6 +16,10 @@ Decrypted images will be stored in dec_image_dir.
 
 Image hashes will be stored in hashed_image_dir.
 
+# Scripts
+
+Scripts must be ran with sudo ./"scriptname".sh
+
 [encryptor.sh](https://github.com/Team-Projects-4/Image-Encryption/blob/main/encryptor.sh) is used for inital encryption before transmission.
 
 [hashor.sh](https://github.com/Team-Projects-4/Image-Encryption-Hashing/blob/main/hashor.sh) is used for inital hashing before transmission.
