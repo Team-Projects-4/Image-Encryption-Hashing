@@ -17,6 +17,6 @@ for image in "$image_dir"/*; do
                 new_filename="${filename%.*}"
                 encrypted_image="enc_image_dir/$new_filename.enc"
         # Encrypts every image with openssl aes and saves the output to enc_image_dir
-                openssl enc -aes-256-cbc -pass pass:group4 -p -in "$image" -out "$encrypted_image"
+                openssl enc -aes-256-cbc -k group4 -p -in "$image" -out "$encrypted_image"
         fi
 done
