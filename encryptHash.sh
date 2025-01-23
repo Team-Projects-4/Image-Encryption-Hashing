@@ -12,7 +12,7 @@ if [ ! -d "$enc_image_dir" ]; then
         mkdir -p "$enc_image_dir"
 fi
 
-# Creates hashed_image_dir if it doesn't exist.
+# Creates hash_dir if it doesn't exist.
 if [ ! -d "$hash_dir" ]; then
         mkdir -p "$hash_dir"
 fi
@@ -21,22 +21,22 @@ fi
 for image in "$image_dir"/*; do
         if [ -f "$image" ]; then
 
+                # Creates the naming standard for the encrypted images.
                 filename=$(basename "$image")
                 new_filename="${filename%.*}"
                 encrypted_image="enc_image_dir/$new_filename.enc"
-        # Encrypts every image with openssl aes and saves the output to enc_image_dir
+                # Encrypts every image with openssl aes and saves the output to enc_image_dir
                 openssl enc -aes-256-cbc -k group4 -p -in "$image" -out "$encrypted_image"
                 
-                for encrypted_image in "$enc_image_dir"/*; do
-                    if [ -f "$encrypted_image" ]; then
+                # Hash each encrypted image
+                hashname=$(basename "$image")
+                md5sum "$encrypted_image" > "hash_dir/$hashname.txt"
 
-                    # Hashes each image inside of enc_image_dir.
-                           hashname=$(basename "$image")
-                           md5sum "$image" > "hash_dir/$hashname.txt"
+                # Grab the first 32 characters from the hash.
+                hash="${hashname: 32}"
 
-                           $encrypted_image >> $hashname.txt
-                fi
+                # Append the hash to the encrypted image.
+                $hash >> $encrypted_image
+          
         fi
-
-
 done
