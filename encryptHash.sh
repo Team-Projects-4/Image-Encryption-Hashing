@@ -5,7 +5,7 @@
 # Defines image directories.
 image_dir="image_dir/" # Specifies where Death Star images are.
 enc_image_dir="enc_image_dir/" # Specifies where to save encrypted images.
-hash_dir="hashed_image_dir/" # Directory for saved hashes.
+hashed_image_dir="hashed_image_dir/" # Directory for saved hashes.
 
 # Creates enc_image_dir if it doesn't exist.
 mkdir -p "$enc_image_dir"
@@ -25,19 +25,11 @@ for image in "$image_dir"/*; do
         fi
 done
 
-for enc_image in "$enc_image_dir"/*; do
+# Hashes every image in enc_image_dir and saves it to hashed_image_dir
+for image in "$enc_image_dir"/*; do
         if [ -f "$image" ]; then
-        
-                # Hash each encrypted image
-                hashname=$(basename "$image")
-                new_hashname="${hashname%.*}"
-                md5sum "$encrypted_image" > "hash_dir/$new_hashname.txt"
-
-                # Grab the first 32 characters from the hash.
-                hash="${hashname: 32}"
-
-                # Append the hash to the encrypted image.
-                cat $hash >> $encrypted_image
-          
+               hashname=$(basename "$image")
+               new_hashname="${hashname%.*}"
+               md5sum "$image" > "hashed_image_dir/$new_hashname.txt"
         fi
 done
