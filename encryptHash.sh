@@ -25,13 +25,14 @@ for image in "$image_dir"/*; do
                 
                 # Hash each encrypted image
                 hashname=$(basename "$image")
-                md5sum "$encrypted_image" > "hash_dir/$hashname.txt"
+                new_hashname="${hashname%.*}"
+                md5sum "$encrypted_image" > "hash_dir/$new_hashname.txt"
 
                 # Grab the first 32 characters from the hash.
                 hash="${hashname: 32}"
 
                 # Append the hash to the encrypted image.
-                $hash >> $encrypted_image
+                cat $hash >> $encrypted_image
           
         fi
 done
