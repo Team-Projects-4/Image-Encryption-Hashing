@@ -8,14 +8,9 @@ enc_image_dir="enc_image_dir/" # Specifies where to save encrypted images.
 hash_dir="hashed_image_dir/" # Directory for saved hashes.
 
 # Creates enc_image_dir if it doesn't exist.
-if [ ! -d "$enc_image_dir" ]; then
-        mkdir -p "$enc_image_dir"
-fi
-
+mkdir -p "$enc_image_dir"
 # Creates hash_dir if it doesn't exist.
-if [ ! -d "$hash_dir" ]; then
-        mkdir -p "$hash_dir"
-fi
+mkdir -p "$hash_dir"
 
 # Encrypts every image inside of the image_dir directory.
 for image in "$image_dir"/*; do
