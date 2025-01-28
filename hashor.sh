@@ -12,8 +12,8 @@ fi
 # Hashes every image in enc_image_dir and saves it to hashed_image_dir
 for image in "$enc_image_dir"/*; do
         if [ -f "$image" ]; then
-               filename=$(basename "$image")
-
-               md5sum "$image" > "hashed_image_dir/$filename.txt"
+               hashname=$(basename "$image")
+               new_hashname="${hashname%.*}"
+               md5sum "$image" > "hashed_image_dir/$new_hashname.txt"
         fi
 done
