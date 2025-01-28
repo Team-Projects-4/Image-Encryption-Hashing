@@ -1,5 +1,7 @@
 #/!bin/sh
 
+# Needs chmod 770 for correct permissions.
+
 # Defines image directories.
 enc_image_dir="enc_image_dir/" # Directory for encrypted DeathStar images.
 hashed_image_dir="hashed_image_dir/" # Directory for saved hashes.
