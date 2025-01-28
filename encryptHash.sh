@@ -27,14 +27,13 @@ for image in "$image_dir"/*; do
                 encrypted_image="enc_image_dir/$new_filename.enc"
                 # Encrypts every image with openssl aes and saves the output to enc_image_dir
                 openssl enc -aes-256-cbc -k group4 -p -in "$image" -out "$encrypted_image"
+
+                # Creates the naming standard for the hashed encrypted images.
+                hashname=$(basename "$image")
+                new_hashname="${hashname%.*}"
+                # Hashes the recently encrypted image and outputs it to hashed_image_dir.
+                md5sum "$encrypted_image" > "hashed_image_dir/$new_hashname.txt"
+                
         fi
 done
 
-# Hashes every image in enc_image_dir and saves it to hashed_image_dir
-for image in "$enc_image_dir"/*; do
-        if [ -f "$image" ]; then
-               hashname=$(basename "$image")
-               new_hashname="${hashname%.*}"
-               md5sum "$image" > "hashed_image_dir/$new_hashname.txt"
-        fi
-done
