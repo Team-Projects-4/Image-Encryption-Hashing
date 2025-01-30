@@ -33,6 +33,8 @@ for image in "$image_dir"/*; do
                 new_hashname="${hashname%.*}"
                 # Hashes the recently encrypted image and outputs it to hashed_image_dir.
                 md5sum "$encrypted_image" > "hashed_image_dir/$new_hashname.txt"
+
+                head -c 32 hashed_image_dir/$new_hashname.txt >> $encrypted_image
                 
         fi
 done
