@@ -8,14 +8,6 @@ Shell code for encrypting and hashing images
 5. If hash doesn't match retransmit, if hash matches tranmission worked.
 6. Decrypt all encrypted images.
 
-Images will be stored in image_dir.
-
-Encrypted images will be stored in enc_image_dir.
-
-Decrypted images will be stored in dec_image_dir.
-
-Image hashes will be stored in hashed_image_dir.
-
 # Scripts
 
 Scripts must be ran with sudo ./"scriptname".sh
