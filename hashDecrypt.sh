@@ -5,6 +5,7 @@
 
 # Defines images directories.
 transmission_dir="transmission_dir/"
+enc_image_dir="enc_image_dir/"
 dec_image_dir="dec_image_dir/"
 transmission_hash_dir="transsmission_hash_dir/"
 rehash_dir="rehash_dir/"
@@ -15,6 +16,11 @@ retransmit=True
 # Creates the transmission_dir if it doesn't exist.
 if [ ! -d "$transmission_dir" ]; then
         mkdir -p "$transmission_dir"
+fi
+
+# Creates the enc_image_dir if it doesn't exist.
+if [ ! -d "$enc_image_dir" ]; then
+        mkdir -p "$enc_image_dir"
 fi
 
 # Creates the dec_image_dir if it doesn't exist.
@@ -40,9 +46,10 @@ for transmission in "$transmission_dir"/*; do
                 tHash="${hashname1%.*}"
                 tail -c 32 $transmission >> transmission_hash_dir/$tHash.txt
 
-                # Need to strip the hash before hashing again.
+                # Strip the hash from the transmission.
+                truncate -s -32 $transmisson
                 
-                # Hash the transmission again
+                # Hash the transmission again.
                 hashname2=$(basename "$transmission")
                 rHash="${hashname2%.*}"
                 md5sum $transmission > rehash_dir/$rHash.txt
@@ -56,9 +63,9 @@ for transmission in "$transmission_dir"/*; do
                         echo "Transmission SUCCESSFUL for $transmission."
 
                         # Decrypt the image
-                        filename=$(basename "$enc_image")
+                        filename=$(basename "$dec_image")
                         new_filename="${filename%.*}"
-                        openssl enc -d -aes-256-cbc -k group4 -in "$new_filename" -out "dec_image_dir/$dec_image" -p                     
+                        openssl enc -d -aes-256-cbc -k group4 -in "$transmission" -out "dec_image_dir/$new_filename" -p                     
 
                 else
                         # If the hashes don't match retransmit = true.
