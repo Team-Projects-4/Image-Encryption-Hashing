@@ -12,10 +12,8 @@ Shell code for encrypting and hashing images
 
 Scripts must be ran with sudo ./"scriptname".sh
 
-[encryptor.sh](https://github.com/Team-Projects-4/Image-Encryption/blob/main/encryptor.sh) is used for inital encryption before transmission.
+Require chmod 770
 
-[hashor.sh](https://github.com/Team-Projects-4/Image-Encryption-Hashing/blob/main/hashor.sh) is used for inital hashing before transmission.
+[encryptHash.sh](https://github.com/Team-Projects-4/Image-Encryption-Hashing/blob/main/encryptHash.sh) Used for inital encryption and hashing of the images.
 
-[hash_verifier](https://github.com/Team-Projects-4/Image-Encryption-Hashing/blob/main/hash_verifier.sh) is used for hash verification/ indication of a successful transmission.
-
-[decryptor.sh](https://github.com/Team-Projects-4/Image-Encryption/blob/main/decryptor.sh) is used for decryption after successful transmission.
+[hashDecrypt.sh](https://github.com/Team-Projects-4/Image-Encryption-Hashing/blob/main/hashDecrypt.sh) Used for hash verification and decryption after the images are transmitted.
