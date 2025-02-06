@@ -5,10 +5,8 @@
 
 # Defines images directories.
 transmission_dir="transmission_dir/"
-enc_image_dir="enc_image_dir/"
 dec_image_dir="dec_image_dir/"
 transmission_hash_dir="transsmission_hash_dir/"
-rehash_dir="rehash_dir/"
 
 # Sets retransmit to true.
 retransmit=True
@@ -33,11 +31,6 @@ if [ ! -d "$transmission_hash_dir" ]; then
         mkdir -p "$transmission_hash_dir"
 fi
 
-# Creates the rehash_dir if it doesn't exist.
-if [ ! -d "$rehash_dir" ]; then
-        mkdir -p "$rehash_dir"
-fi
-
 for transmission in "$transmission_dir"/*; do
         if [ -f "$transmission" ]; then
 
@@ -52,14 +45,14 @@ for transmission in "$transmission_dir"/*; do
                 # Hash the transmission again.
                 hashname2=$(basename "$transmission")
                 rHash="${hashname2%.*}"
-                md5sum $transmission > rehash_dir/$rHash.txt
+                md5sum $transmission > transmission_hash_dir/$rHash.txt
 
                 # Compare the hashes to verify they are the same.
 
                 if [ "$tHash" == "$rHash" ]; then
 
                         # If the hashes match retransmit = false.
-                        retransmit=False
+                        retransmit=false
                         echo "Transmission SUCCESSFUL for $transmission."
 
                         # Decrypt the image
@@ -69,7 +62,7 @@ for transmission in "$transmission_dir"/*; do
 
                 else
                         # If the hashes don't match retransmit = true.
-                        retransmit=True
+                        retransmit=true
                         echo "Transmission FAILED for $transmission."
                 fi
 done
