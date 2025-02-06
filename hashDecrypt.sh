@@ -37,19 +37,21 @@ for transmission in "$transmission_dir"/*; do
 
                 # Strip the hash from the transmission.
                 hashname1=$(basename "$transmission")
-                tHash="${hashname1%.*}"
-                tail -c 32 $transmission >> thash_dir/$tHash.txt
+                tHashname="${hashname1%.*}"
+                tHash="thash_dir/$tHashname.txt"
+                tail -c 32 $transmission >> $tHash
 
                 # Strip the hash from the transmission.
-                truncate -s -32 $transmisson.enc
+                truncate -s -32 $transmisson
                 
                 # Hash the transmission again.
                 hashname2=$(basename "$transmission")
-                rHash="${hashname2%.*}"
-                md5sum $transmission > rhash_dir/$rHash.txt
+                rHashname="${hashname2%.*}"
+                rHash="rhash_dir/$rHashname.txt"
+                md5sum $transmission > $rHash.txt
 
                 # Removes extra non-necessary information from the hash file.
-                truncate -s 32 rhash_dir/$rhash.txt
+                truncate -s 32 $rhash.txt
 
                 # Compare the hashes to verify they are the same.
                 if [ "$tHash" = "$rHash" ]; then
