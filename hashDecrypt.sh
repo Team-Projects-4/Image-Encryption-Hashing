@@ -65,4 +65,5 @@ for transmission in "$transmission_dir"/*; do
                         retransmit=true
                         echo "Transmission FAILED for $transmission."
                 fi
+        fi
 done
