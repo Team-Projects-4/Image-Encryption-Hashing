@@ -6,6 +6,7 @@
 image_dir="image_dir/" # Specifies where Death Star images are.
 enc_image_dir="enc_image_dir/" # Specifies where to save encrypted images.
 hashed_image_dir="hashed_image_dir/" # Directory for saved hashes.
+transmission_dir="transmission_dir/"
 
 # Creates enc_image_dir if it doesn't exist.
 if [ ! -d "$enc_image_dir" ]; then
@@ -15,6 +16,10 @@ fi
 # Creates hash_dir if it doesn't exist.
 if [ ! -d "$hashed_image_dir" ]; then
         mkdir -p "$hashed_image_dir"
+fi
+
+if [ ! -d "$transmission_dir" ]; then
+        mkdir -p "$transmission_dir"
 fi
 
 # Encrypts every image inside of the image_dir directory.
@@ -34,7 +39,10 @@ for image in "$image_dir"/*; do
                 # Hashes the recently encrypted image and outputs it to hashed_image_dir.
                 md5sum "$encrypted_image" > "hashed_image_dir/$new_hashname.txt"
 
-                head -c 32 hashed_image_dir/$new_hashname.txt >> $encrypted_image
+                transmission=$(basename "$encrypted_image")
+                new_transmission="${transmission%.*}"
+                tran_dir=transmission_dir/$new_transmission
+                head -c 32 hashed_image_dir/$new_hashname.txt >> $transmission
                 
         fi
 done
