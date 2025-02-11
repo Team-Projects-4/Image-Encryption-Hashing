@@ -42,7 +42,7 @@ for transmission in "$transmission_dir"/*; do
                 tail -c 32 $transmission >> $tHash
 
                 # Strip the hash from the transmission.
-                truncate -s -32 $transmisson
+                sudo truncate -s -32 $transmisson
                 
                 # Hash the transmission again.
                 hashname2=$(basename "$transmission")
@@ -51,7 +51,7 @@ for transmission in "$transmission_dir"/*; do
                 md5sum $transmission > $rHash.txt
 
                 # Removes extra non-necessary information from the hash file.
-                truncate -s 32 $rhash.txt
+                sudo truncate -s 32 $rhash
 
                 # Compare the hashes to verify they are the same.
                 if [ "$tHash" = "$rHash" ]; then
