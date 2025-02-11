@@ -29,9 +29,9 @@ for image in "$image_dir"/*; do
                 # Creates the naming standard for the encrypted images.
                 filename=$(basename "$image")
                 new_filename="${filename%.*}"
-                encrypted_image="enc_image_dir/$new_filename.enc"
+                encrypted_image="$new_filename.enc"
                 # Encrypts every image with openssl aes and saves the output to enc_image_dir
-                openssl enc -aes-256-cbc -k group4 -p -in "$image" -out "$encrypted_image"
+                openssl enc -aes-256-cbc -k group4 -p -in "$image" -out "enc_image_dir/$encrypted_image"
 
                 # Creates the naming standard for the hashed encrypted images.
                 hashname=$(basename "$image")
@@ -39,10 +39,7 @@ for image in "$image_dir"/*; do
                 # Hashes the recently encrypted image and outputs it to hashed_image_dir.
                 md5sum "$encrypted_image" > "hashed_image_dir/$new_hashname.txt"
 
-                transmission=$(basename "$encrypted_image")
-                new_transmission="${transmission%.*}"
-                tran_dir=transmission_dir/$new_transmission
-                head -c 32 hashed_image_dir/$new_hashname.txt >> $transmission
+                head -c 32 hashed_image_dir/$new_hashname.txt >> transmission_dir/$encrypted_image
                 
         fi
 done
