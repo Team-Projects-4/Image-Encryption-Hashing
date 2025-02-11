@@ -37,8 +37,8 @@ for image in "$image_dir"/*; do
                 hashname=$(basename "$image")
                 new_hashname="${hashname%.*}"
                 # Hashes the recently encrypted image and outputs it to hashed_image_dir.
-                md5sum "$encrypted_image" > "hashed_image_dir/$new_hashname.txt"
-
+                md5sum "enc_image_dir/$encrypted_image" > "hashed_image_dir/$new_hashname.txt"
+                # Appends the hash to the encrypted image and saves is to the transmission dir.
                 head -c 32 hashed_image_dir/$new_hashname.txt >> transmission_dir/$encrypted_image
                 
         fi
