@@ -32,6 +32,11 @@ if [ ! -d "$rhash_dir" ]; then
         mkdir -p "$rhash_dir"
 fi
 
+# Creates the temp_hash directory if it doesn't exist.
+if [ ! -d "$temp_hash" ]; then
+        mkdir -p "$temp_hash"
+fi
+
 for transmission in "$transmission_dir"/*; do
         if [ -f "$transmission" ]; then
 
@@ -42,16 +47,16 @@ for transmission in "$transmission_dir"/*; do
                 tail -c 32 $transmission >> $tHash
 
                 # Strip the hash from the transmission.
-                sudo truncate -s -32 $transmisson
+                unhash_transmission= "${transmisson: -32}"
                 
                 # Hash the transmission again.
                 hashname2=$(basename "$transmission")
                 rHashname="${hashname2%.*}"
                 rHash="rhash_dir/$rHashname.txt"
-                md5sum $transmission > $rHash.txt
+                md5sum $unhash_transmission > temp_hash/$hash.txt
 
                 # Removes extra non-necessary information from the hash file.
-                sudo truncate -s 32 $rhash
+                head -c 32 temp_hash/$hash.txt >> $rHash
 
                 # Compare the hashes to verify they are the same.
                 if [ "$tHash" = "$rHash" ]; then
