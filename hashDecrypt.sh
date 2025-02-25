@@ -39,7 +39,7 @@ for enc_image in "$transmission_dir"/*; do
                 echo $enc_data
 
                 # Rehash the transmission.
-                computed_hash=md5sum "$enc_data"
+                computed_hash=$(md5sum "$enc_data")
                 echo "Rehashed transmission:"$computed_hash
 
                 # Compare the two hashes, if the are the same decrypt, if not print error message.
@@ -53,7 +53,8 @@ for enc_image in "$transmission_dir"/*; do
                         echo "Transmission successfull for $filename."
                 else
 
-                        # Hashes weren't the same, need to retransmit.                              echo "Transmission failed for $filename."
+                        # Hashes weren't the same, need to retransmit.   
+                        echo "Transmission failed for $filename."
                 fi
         fi
 done
