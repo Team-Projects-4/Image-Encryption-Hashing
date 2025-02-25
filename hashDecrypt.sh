@@ -6,11 +6,7 @@
 # Defines image and hash directories.
 transmission_dir="transmission_dir/"
 dec_image_dir="dec_image_dir/"
-thash_dir="thash_dir/"
-rhash_dir="rhash_dir/"
-
-# Sets retransmit to true.
-retransmit=true
+hash_dir="hash_dir/"
 
 # Creates the transmission_dir if it doesn't exist.
 if [ ! -d "$transmission_dir" ]; then
@@ -23,57 +19,41 @@ if [ ! -d "$dec_image_dir" ]; then
 fi
 
 # Creates the thash_dir if it doesn't exist.
-if [ ! -d "$thash_dir" ]; then
-        mkdir -p "$thash_dir"
+if [ ! -d "$hash_dir" ]; then
+        mkdir -p "$hash_dir"
 fi
 
-# Creates the rhash_dir if it doesn't exist.
-if [ ! -d "$rhash_dir" ]; then
-        mkdir -p "$rhash_dir"
-fi
-
-# Creates the temp_hash directory if it doesn't exist.
-if [ ! -d "$temp_hash" ]; then
-        mkdir -p "$temp_hash"
-fi
-
-for transmission in "$transmission_dir"/*; do
+for enc_image in "$transmission_dir"/*; do
         if [ -f "$transmission" ]; then
+        
+                filename=$(basename "$enc_image")
+                new_filename="${filename%.*}"
 
-                # Strip the hash from the transmission.
-                hashname1=$(basename "$transmission")
-                tHashname="${hashname1%.*}"
-                tHash="thash_dir/$tHashname.txt"
-                tail -c 32 $transmission >> $tHash
+                # Grab the hash from the transmission.
+                hash_from_transmission=$(tail -c 32 "$enc_image")
+                echo "Transmitted hash:"$hash_from_transmission
 
-                # Strip the hash from the transmission.
-                unhash_transmission= "${transmisson: -32}"
-                
-                # Hash the transmission again.
-                hashname2=$(basename "$transmission")
-                rHashname="${hashname2%.*}"
-                rHash="rhash_dir/$rHashname.txt"
-                md5sum $unhash_transmission > temp_hash/$hash.txt
+                # Remove the hash from the transmission.
+                #enc_data=$(head -c -32 "$enc_image")
+                enc_data="${enc_image:-32}"
+                echo $enc_data
 
-                # Removes extra non-necessary information from the hash file.
-                head -c 32 temp_hash/$hash.txt >> $rHash
+                # Rehash the transmission.
+                computed_hash=md5sum "$enc_data"
+                echo "Rehashed transmission:"$computed_hash
 
-                # Compare the hashes to verify they are the same.
-                if [ "$tHash" = "$rHash" ]; then
+                # Compare the two hashes, if the are the same decrypt, if not print error message.
+                if [ "$computed_hash" = "$hash_from_transmission" ]; then
 
-                        # If the hashes match retransmit = false.
-                        retransmit=false
-                        echo "Transmission SUCCESSFUL for $transmission."
+                        dec_image="$dec_image_dir/$new_filename.dec"
 
-                        # Decrypt the image
-                        filename=$(basename "$dec_image")
-                        new_filename="${filename%.*}"
-                        openssl enc -d -aes-256-cbc -k group4 -in "$transmission" -out "dec_image_dir/$new_filename" -p                     
+                        # Decrypt the encrypted image.
+                        echo "$computed_hash" | openssl enc -d -aes-256-cbc -k group4 -in "$enc_data" -out "$dec_image" -p
 
+                        echo "Transmission successfull for $filename."
                 else
-                        # If the hashes don't match retransmit = true.
-                        retransmit=true
-                        echo "Transmission FAILED for $transmission."
+
+                        # Hashes weren't the same, need to retransmit.                              echo "Transmission failed for $filename."
                 fi
         fi
 done
