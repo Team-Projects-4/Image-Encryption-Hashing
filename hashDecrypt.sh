@@ -1,4 +1,6 @@
-#!/bin/sh                                                                   #                                                                           # This is the primary script used to verify the hash and decrypt the encrypted images.
+#!/bin/sh
+#
+# This is the primary script used to verify the hash and decrypt the encrypted images.
 # Requires chmod 770
 
 # Defines image and hash directories.
@@ -16,10 +18,11 @@ if [ ! -d "$dec_image_dir" ]; then
 fi
 
 for enc_image in "$transmission_dir"/*; do
-        if [ -f "$transmission" ]; then
+        if [ -f "$enc_image" ]; then
 
-                filename=$(basename "$transmission")
+                filename=$(basename "$enc_image")
                 new_filename="${filename%.*}"
+                echo "Processing file: $filename"
 
                 # Grab the hash from the transmission.
                 hash_from_transmission=$(tail -c 32 "$enc_image")
@@ -29,22 +32,24 @@ for enc_image in "$transmission_dir"/*; do
                 enc_data=$(head -c -32 "$enc_image")
 
                 # Rehash the transmission.
-                computed_hash=$(md5sum "$enc_data")
+                computed_hash=$(echo "$enc_data" | md5sum | awk '{print $1}')
                 echo "Rehashed transmission:"$computed_hash
 
                 # Compare the two hashes, if the are the same decrypt, if not print error message.
-                if [ "$computed_hash" = "$hash_from_transmission" ]; then   
-                
+                if [ "$computed_hash" = "$hash_from_transmission" ]; then
+
                         dec_image="$dec_image_dir/$new_filename.dec"
 
                         # Decrypt the encrypted image.
-                        openssl enc -d -aes-256-cbc -k group4 -in "$enc_data" -out "$dec_image" -p
+                        echo "$enc_data" | openssl enc -d -aes-256-cbc -k group4 -out "$dec_image" -p
 
                         echo "Transmission successfull for $filename."
+                        echo " "
                 else
 
                         # Hashes weren't the same, need to retransmit.
                         echo "Transmission failed for $filename."
+                        echo " "
                 fi
         fi
 done
