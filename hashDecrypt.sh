@@ -26,14 +26,14 @@ for enc_image in "$transmission_dir"/*; do
 
                 # Grab the hash from the transmission.
                 hash_from_transmission=$(tail -c 32 "$enc_image")
-                echo "Transmitted hash:"$hash_from_transmission
+                echo "Transmitted hash:$hash_from_transmission"
 
                 # Remove the hash from the transmission.
                 enc_data=$(head -c -32 "$enc_image")
 
                 # Rehash the transmission.
                 computed_hash=$(echo "$enc_data" | md5sum | awk '{print $1}')
-                echo "Rehashed transmission:"$computed_hash
+                echo "Rehashed transmission:$computed_hash"
 
                 # Compare the two hashes, if the are the same decrypt, if not print error message.
                 if [ "$computed_hash" = "$hash_from_transmission" ]; then
