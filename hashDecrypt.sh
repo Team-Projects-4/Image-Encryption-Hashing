@@ -26,7 +26,7 @@ for enc_image in "$transmission_dir"/*; do
 
                 # Grab the hash from the transmission.
                 hash_from_transmission=$(tail -c 32 "$enc_image")
-                echo "Transmitted hash:      $hash_from_transmission"
+                echo "Transmitted hash: $hash_from_transmission"
 
                 # Remove the hash from the transmission.
                 enc_data=$(head -c -32 "$enc_image")
