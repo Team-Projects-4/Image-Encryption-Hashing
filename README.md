@@ -12,7 +12,7 @@ Shell code for encrypting and hashing images
 
 Scripts must be ran with sudo ./"scriptname".sh
 
-Require chmod 770
+Require chmod 70
 
 [encryptHash.sh](https://github.com/Team-Projects-4/Image-Encryption-Hashing/blob/main/encryptHash.sh) Used for inital encryption and hashing of the images.
 
