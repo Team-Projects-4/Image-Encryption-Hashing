@@ -1,6 +1,6 @@
-#/!bin/sh
-
-image_dir="image_dir/" # Specifies where Death Star images are.
+#!/bin/sh
+USER=$(whoami)
+image_dir="/home/$USER/repos/Image-Encryption-Hashing/image_dir/" # Specifies where Death Star images are.
 enc_image_dir="/home/$USER/repos/TX-Image/imgTX/" # Specifies where to save encrypted images.
 
 if [ ! -d "$enc_image_dir" ]; then
