@@ -1,7 +1,7 @@
 #/!bin/sh
 
 image_dir="image_dir/" # Specifies where Death Star images are.
-enc_image_dir="enc_image_dir/" # Specifies where to save encrypted images.
+enc_image_dir="/home/$USER/repos/TX-Image/imgTX" # Specifies where to save encrypted images.
 
 if [ ! -d "$enc_image_dir" ]; then
         mkdir -p "$enc_image_dir"
