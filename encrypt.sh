@@ -1,20 +1,35 @@
-#!/bin/sh
-USER=$(whoami)
-image_dir="/home/$USER/repos/Image-Encryption-Hashing/image_dir/" # Specifies where Death Star images are.
-enc_image_dir="/home/$USER/repos/TX-Image/imgTX/" # Specifies where to save encrypted images.
+#!/usr/bin/env bash
+#
+# encrypt.sh
+# Encrypts all image files in image_dir and places the resulting *.enc files in enc_image_dir.
 
-if [ ! -d "$enc_image_dir" ]; then
-        mkdir -p "$enc_image_dir"
-fi
+# Directory containing the original (unencrypted) images
+SRC_IMAGE_DIR="/home/$USER/repos/Image-Encryption-Hashing/image_dir/"
 
-for image in "$image_dir"/*; do
-        if [ -f "$image" ]; then
+# Directory where encrypted files will be saved
+ENC_IMAGE_DIR="/home/$USER/repos/Image-Encryption-Hashing/enc_image_dir/"
 
-                # Creates the naming standard for the encrypted images.
-                filename=$(basename "$image")
-                new_filename="${filename%.*}"
-                enc_image="$new_filename.enc"
-                # Encrypts every image with openssl aes and saves the output to enc_image_dir
-                openssl enc -aes-256-cbc -k group4 -p -in "$image" -out "$enc_image_dir$enc_image"
-          fi
+# Create the encryption output directory if it doesn’t exist
+mkdir -p "${ENC_IMAGE_DIR}"
+
+# Loop through every file in SRC_IMAGE_DIR
+for image in "${SRC_IMAGE_DIR}"*; do
+  # Ensure we’re only handling files
+  if [ -f "${image}" ]; then
+    # Strip path and extension
+    filename="$(basename -- "${image}")"
+    base_name="${filename%.*}"
+
+    # Name for the encrypted file
+    enc_filename="${base_name}.enc"
+
+    # Encrypt the file with AES-256-CBC
+    openssl enc -aes-256-cbc \
+      -k group4 \
+      -p \
+      -in "${image}" \
+      -out "${ENC_IMAGE_DIR}${enc_filename}"
+  fi
 done
+
+echo "Encryption complete. Encrypted files are in: ${ENC_IMAGE_DIR}"

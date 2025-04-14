@@ -1,21 +1,36 @@
-#/!bin/sh
+#!/usr/bin/env bash
+#
+# decrypt.sh
+# Decrypts all *.enc files in dec_image_dir and places the decrypted results in out_image_dir.
 
-enc_image_dir="/home/$USER/repos/Image-Encryption-Hashing/enc_image_dir/" # Specifies where to save encrypted images.
-dec_image_dir="/home/$USER/repos/Image-Encryption-Hashing/dec_image_dir/" # Specifies where to save decrypted images.
-img_output_dir="/home/$USER/repos/Image-Encryption-Hashing/out_image_dir/"
-# Creates dec_image_dir if it doesn't exist.
-if [ ! -d "$dec_image_dir" ]; then
-        mkdir -p "$dec_image_dir"
-fi
+# Directory containing the encrypted *.enc files
+DEC_IMAGE_DIR="/home/$USER/repos/Image-Encryption-Hashing/dec_image_dir/"
 
-for image in "$dec_image_dir"/*; do
-        if [ -f "image" ]; then
+# Directory where decrypted files will be saved
+OUT_IMAGE_DIR="/home/$USER/repos/Image-Encryption-Hashing/out_image_dir/"
 
-                # Creates the naming standard for the encrypted images.
-                filename=$(basename "$image")
-                new_filename="${filename%.*}"
-                dec_image="$new_filename.enc"
-                # Encrypts every image with openssl aes and saves the output to enc_image_dir
-                openssl enc -d -aes-256-cbc -k group4 -p -in "$image" -out "$img_output_dir$dec_image" 
-        fi
+# Create the decryption output directory if it doesn’t exist
+mkdir -p "${OUT_IMAGE_DIR}"
+
+# Loop through all encrypted *.enc files in DEC_IMAGE_DIR
+for enc_file in "${DEC_IMAGE_DIR}"*.enc; do
+  # Ensure we’re only handling files
+  if [ -f "${enc_file}" ]; then
+    # Strip path and .enc extension
+    filename="$(basename -- "${enc_file}")"
+    base_name="${filename%.*}"
+
+    # Name for the decrypted file. 
+    # Adjust extension as needed (e.g., .jpg, .png, etc.). Using .dec here for demonstration.
+    dec_filename="${base_name}.dec"
+
+    # Decrypt the file
+    openssl enc -d -aes-256-cbc \
+      -k group4 \
+      -p \
+      -in "${enc_file}" \
+      -out "${OUT_IMAGE_DIR}${dec_filename}"
+  fi
 done
+
+echo "Decryption complete. Decrypted files are in: ${OUT_IMAGE_DIR}"
