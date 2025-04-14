@@ -14,15 +14,14 @@ mkdir -p "${OUT_IMAGE_DIR}"
 
 # Loop through all encrypted *.enc files in DEC_IMAGE_DIR
 for enc_file in "${DEC_IMAGE_DIR}"*.enc; do
-  # Ensure we’re only handling files
+  # Ensure we're only handling files
   if [ -f "${enc_file}" ]; then
     # Strip path and .enc extension
     filename="$(basename -- "${enc_file}")"
     base_name="${filename%.*}"
 
-    # Name for the decrypted file. 
-    # Adjust extension as needed (e.g., .jpg, .png, etc.). Using .dec here for demonstration.
-    dec_filename="${base_name}.dec"
+    # Name for the decrypted file: replaces .enc with .png
+    dec_filename="${base_name}.png"
 
     # Decrypt the file
     openssl enc -d -aes-256-cbc \
